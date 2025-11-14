@@ -1,0 +1,6 @@
+Primeira linha do ficheiro
+Segunda linha do ficheiro
+Terceira linha do ficheiro
+ABC
+DEF
+GHI
