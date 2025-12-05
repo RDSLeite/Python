@@ -1,37 +1,59 @@
+# nave.py
+
+CORES = {
+    "vermelho": "\033[91m",
+    "verde": "\033[92m",
+    "amarelo": "\033[93m",
+    "azul": "\033[94m",
+    "magenta": "\033[95m",
+    "reset": "\033[0m"
+}
+
 class NaveModelo:
-    def __init__(self, denominacao, cor, perda_energia, simbolo):
-        self.denominacao = denominacao
-        self.cor = cor  # ANSI code da cor
+    def __init__(self, nome: str, cor: str, perda_energia: int, simbolo: str):
+        self.nome = nome
+        self.cor = cor
+        self.energia = 100
         self.perda_energia = perda_energia
         self.simbolo = simbolo
-        self.energia = 100
         self.pos = None
         self.viva = True
 
     def perder_energia(self):
-        if self.viva:
-            self.energia -= self.perda_energia
-            if self.energia <= 0:
-                self.energia = 0
-                self.viva = False
+        if not self.viva:
+            return self.energia
+        self.energia -= self.perda_energia
+        if self.energia <= 0:
+            self.energia = 0
+            self.viva = False
         return self.energia
 
     def energia_atual(self):
         return self.energia
 
-    # ✅ ADICIONADO para evitar AttributeError
     def mostrar_dados(self):
-        return f"{self.cor}{self.denominacao} | Energia: {self.energia} | Símbolo: {self.simbolo}\033[0m"
+        cor = CORES.get(self.cor, "")
+        reset = CORES["reset"]
+        return f"{cor}{self.nome} {barra_energia(self.energia)} | Energia: {self.energia} | Símbolo: {self.simbolo}{reset}"
 
 
 class NaveComExtra(NaveModelo):
-    def __init__(self, denominacao, cor, perda_energia, simbolo, energia_extra):
-        super().__init__(denominacao, cor, perda_energia, simbolo)
+    def __init__(self, nome: str, cor: str, perda_energia: int, simbolo: str, energia_extra: int):
+        super().__init__(nome, cor, perda_energia, simbolo)
         self.energia_extra = energia_extra
 
     def adicionar_energia_extra(self):
-        if self.viva:
-            self.energia += self.energia_extra
-            if self.energia > 100:
-                self.energia = 100
+        if not self.viva:
+            return self.energia
+        self.energia += self.energia_extra
+        if self.energia > 100:
+            self.energia = 100
         return self.energia
+
+
+# Barra de energia
+def barra_energia(energia):
+    total = 10
+    cheios = int(energia / 10)
+    vazios = total - cheios
+    return "[" + "█"*cheios + " "*vazios + "]"
