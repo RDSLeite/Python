@@ -3,8 +3,8 @@
 import random
 from nave import *
 
-LINHAS = 10
-COLUNAS = 10
+LINHAS = 6
+COLUNAS = 6
 
 def criar_matriz(vazia='.'):
     return [[vazia for _ in range(COLUNAS)] for _ in range(LINHAS)]
