@@ -1,0 +1,48 @@
+{
+    "naves": [
+        {
+            "classe": "NaveModelo",
+            "nome": "Falcon",
+            "cor": "vermelho",
+            "energia": 0,
+            "perda_energia": 20,
+            "simbolo": "F",
+            "energia_extra": 0,
+            "viva": false,
+            "pos": [
+                1,
+                1
+            ]
+        },
+        {
+            "classe": "NaveComExtra",
+            "nome": "Guardian",
+            "cor": "azul",
+            "energia": 60,
+            "perda_energia": 15,
+            "simbolo": "G",
+            "energia_extra": 20,
+            "viva": true,
+            "pos": [
+                1,
+                5
+            ]
+        },
+        {
+            "classe": "NaveComExtra",
+            "nome": "Viper",
+            "cor": "magenta",
+            "energia": 60,
+            "perda_energia": 10,
+            "simbolo": "V",
+            "energia_extra": 25,
+            "viva": true,
+            "pos": [
+                5,
+                4
+            ]
+        }
+    ],
+    "total_tiros": 105,
+    "total_certos": 13
+}
