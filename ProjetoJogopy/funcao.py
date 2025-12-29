@@ -2,17 +2,21 @@ import json
 import os
 from nave import *
 
+# Pasta onde os saves são guardados
 SAVE_FOLDER = "saves"
 
-# Cria a pasta de saves se não existir
+# Cria a pasta de saves caso não exista
 if not os.path.exists(SAVE_FOLDER):
     os.makedirs(SAVE_FOLDER)
 
-# ----------------- LIMPAR TELA -----------------
+
+# ================= LIMPAR ECRÃ =================
 def limpar_ecra():
+    # Limpa o terminal (Windows ou Linux/Mac)
     os.system("cls" if os.name == "nt" else "clear")
 
-# ----------------- GUARDAR JOGO -----------------
+
+# ================= GUARDAR JOGO =================
 def guardar_jogo(caminho, naves, total_tiros, total_certos):
     dados = {
         "naves": [],
@@ -20,6 +24,7 @@ def guardar_jogo(caminho, naves, total_tiros, total_certos):
         "total_certos": total_certos
     }
 
+    # Guarda os dados de cada nave
     for nav in naves:
         dados["naves"].append({
             "classe": type(nav).__name__,
@@ -33,23 +38,31 @@ def guardar_jogo(caminho, naves, total_tiros, total_certos):
             "pos": nav.pos
         })
 
+    # Escreve o ficheiro JSON
     with open(caminho, "w", encoding="utf-8") as f:
         json.dump(dados, f, indent=4)
+
     print(f"Jogo guardado em: {caminho}")
 
-# ----------------- GUARDAR JOGO AUTOMÁTICO -----------------
+
+# ================= GUARDAR AUTOMÁTICO =================
 def guardar_jogo_auto(naves, total_tiros, total_certos):
-    # descobrir número do próximo save
+    # Descobre o próximo número de save
     existentes = [
         f for f in os.listdir(SAVE_FOLDER)
         if f.startswith("save_") and f.endswith(".json")
     ]
+
     numero = len(existentes) + 1
     ficheiro = os.path.join(SAVE_FOLDER, f"save_{numero}.json")
-    guardar_jogo(ficheiro, naves, total_tiros, total_certos)
-    return ficheiro  # retorna o nome do ficheiro criado
 
-# ----------------- CARREGAR JOGO -----------------
+    guardar_jogo(ficheiro, naves, total_tiros, total_certos)
+
+    # Retorna o nome do ficheiro criado
+    return ficheiro
+
+
+# ================= CARREGAR JOGO =================
 def carregar_jogo(ficheiro, NaveModelo, NaveComExtra):
     with open(ficheiro, "r", encoding="utf-8") as f:
         dados = json.load(f)
@@ -57,42 +70,31 @@ def carregar_jogo(ficheiro, NaveModelo, NaveComExtra):
     naves = []
 
     for d in dados["naves"]:
-        # compatível com saves antigos
+        # Compatibilidade com naves normais e com extra
         classe = d.get("classe", "NaveModelo")
+
         if classe == "NaveModelo":
             nav = NaveModelo(d["nome"], d["cor"], d["perda_energia"], d["simbolo"])
         else:
-            nav = NaveComExtra(d["nome"], d["cor"], d["perda_energia"], d["simbolo"], d.get("energia_extra", 0))
+            nav = NaveComExtra(
+                d["nome"],
+                d["cor"],
+                d["perda_energia"],
+                d["simbolo"],
+                d.get("energia_extra", 0)
+            )
 
+        # Restaura o estado da nave
         nav.energia = d["energia"]
         nav.viva = d["viva"]
         nav.pos = tuple(d["pos"]) if d.get("pos") else None
+
         naves.append(nav)
 
     return naves, dados["total_tiros"], dados["total_certos"]
 
-# ----------------- ESCOLHER SAVE -----------------
-def escolher_save():
-    saves = [
-        f for f in os.listdir(SAVE_FOLDER)
-        if f.startswith("save_") and f.endswith(".json")
-    ]
 
-    if not saves:
-        return None
-
-    print("SAVES DISPONÍVEIS:\n")
-    for i, s in enumerate(saves, 1):
-        print(f"{i} - {s}")
-
-    escolha = input("\nEscolhe o save: ")
-
-    if not escolha.isdigit() or int(escolha) < 1 or int(escolha) > len(saves):
-        print("Opção inválida.")
-        return None
-
-    return os.path.join(SAVE_FOLDER, saves[int(escolha) - 1])
-
-# ----------------- EFICÁCIA -----------------
+# ================= EFICÁCIA =================
 def eficacia(total, certos):
+    # Calcula a percentagem de tiros certeiros
     return (certos * 100 / total) if total > 0 else 0
