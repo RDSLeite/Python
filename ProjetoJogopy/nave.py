@@ -9,7 +9,7 @@ CORES = {
 }
 
 
-# ================= CLASSE BASE DAS NAVES =================
+# ----------------- CLASSE BASE DAS NAVES -----------------
 class NaveModelo:
     def __init__(self, nome: str, cor: str, perda_energia: int, simbolo: str):
         # Nome da nave
@@ -61,7 +61,7 @@ class NaveModelo:
         return f"{cor}{self.nome} {barra_energia(self.energia)} | Energia: {self.energia} | Símbolo: {self.simbolo}{reset}"
 
 
-# ================= NAVE COM ENERGIA EXTRA =================
+# ----------------- NAVE COM ENERGIA EXTRA -----------------
 class NaveComExtra(NaveModelo):
     def __init__(self, nome: str, cor: str, perda_energia: int, simbolo: str, energia_extra: int):
         # Inicializa a nave base
@@ -85,7 +85,7 @@ class NaveComExtra(NaveModelo):
         return self.energia
 
 
-# ================= BARRA DE ENERGIA =================
+# ----------------- BARRA DE ENERGIA -----------------
 def barra_energia(energia):
     total = 10
     cheios = int(energia / 10)

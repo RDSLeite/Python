@@ -10,13 +10,13 @@ if not os.path.exists(SAVE_FOLDER):
     os.makedirs(SAVE_FOLDER)
 
 
-# ================= LIMPAR ECRÃ =================
+# ----------------- LIMPAR ECRÃ -----------------
 def limpar_ecra():
     # Limpa o terminal (Windows ou Linux/Mac)
     os.system("cls" if os.name == "nt" else "clear")
 
 
-# ================= GUARDAR JOGO =================
+# ----------------- GUARDAR JOGO -----------------
 def guardar_jogo(caminho, naves, total_tiros, total_certos):
     dados = {
         "naves": [],
@@ -45,7 +45,7 @@ def guardar_jogo(caminho, naves, total_tiros, total_certos):
     print(f"Jogo guardado em: {caminho}")
 
 
-# ================= GUARDAR AUTOMÁTICO =================
+# -----------------GUARDAR AUTOMÁTICO-----------------
 def guardar_jogo_auto(naves, total_tiros, total_certos):
     # Descobre o próximo número de save
     existentes = [
@@ -62,7 +62,7 @@ def guardar_jogo_auto(naves, total_tiros, total_certos):
     return ficheiro
 
 
-# ================= CARREGAR JOGO =================
+# ----------------- CARREGAR JOGO -----------------
 def carregar_jogo(ficheiro, NaveModelo, NaveComExtra):
     with open(ficheiro, "r", encoding="utf-8") as f:
         dados = json.load(f)
@@ -94,7 +94,7 @@ def carregar_jogo(ficheiro, NaveModelo, NaveComExtra):
     return naves, dados["total_tiros"], dados["total_certos"]
 
 
-# ================= EFICÁCIA =================
+# ----------------- EFICÁCIA -----------------
 def eficacia(total, certos):
     # Calcula a percentagem de tiros certeiros
     return (certos * 100 / total) if total > 0 else 0
